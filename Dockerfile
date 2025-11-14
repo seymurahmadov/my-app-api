@@ -1,4 +1,4 @@
-FROM openjdk:21 as build
+FROM eclipse-temurin:21-jdk as build
 WORKDIR /app
 
 COPY mvnw .
