@@ -12,6 +12,7 @@ COPY src src
 # Cache mount olmadan (daha sadə və etibarlı)
 RUN ./mvnw package -DskipTests
 
+
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM openjdk:21
