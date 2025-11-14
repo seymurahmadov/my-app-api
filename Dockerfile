@@ -9,7 +9,7 @@ RUN chmod +x ./mvnw
 
 COPY src src
 
-RUN --mount=type=cache,target=/root/.m2,sharing=locked ./mvnw package -DskipTests
+RUN --mount=type=cache,id=maven-m2-cache,target=/root/.m2,sharing=locked ./mvnw package -DskipTests
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
