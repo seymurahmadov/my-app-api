@@ -3,9 +3,9 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - dev
-      - staging
-      - main
+      - docker-build
+      - deploy-staging
+      - deploy-prod
 
 jobs:
   build:

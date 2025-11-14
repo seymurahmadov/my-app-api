@@ -8,6 +8,7 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
 app:
   allowed:
     origins: http://localhost:3000
