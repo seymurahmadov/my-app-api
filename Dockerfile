@@ -1,6 +1,3 @@
-# Enable BuildKit required for cache mounts
-# export DOCKER_BUILDKIT=1   (terminalda build etməzdən əvvəl)
-
 FROM openjdk:21 as build
 WORKDIR /app
 
@@ -12,8 +9,8 @@ RUN chmod +x ./mvnw
 
 COPY src src
 
-# Add id for cache
-RUN --mount=type=cache,id=maven-cache,target=/root/.m2 ./mvnw package -DskipTests
+# Cache mount üçün key əlavə et
+RUN --mount=type=cache,target=/root/.m2,key=maven-cache ./mvnw package -DskipTests
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
