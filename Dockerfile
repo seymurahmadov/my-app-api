@@ -9,8 +9,7 @@ RUN chmod +x ./mvnw
 
 COPY src src
 
-# Cache mount üçün key əlavə et
-RUN --mount=type=cache,target=/root/.m2,key=maven-cache ./mvnw package -DskipTests
+RUN --mount=type=cache,id=maven-cache,target=/root/.m2 ./mvnw package -DskipTests
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
