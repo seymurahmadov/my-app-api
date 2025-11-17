@@ -49,7 +49,7 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_DEV }}
         run: |
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment ${{ secrets.RAILWAY_ENV_ID_DEV }}
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME_DEV }} --environment ${{ secrets.RAILWAY_ENV_ID_DEV }}
 
       - name: Verify deployment
         run: echo "✅ Deployed to DEV environment"
@@ -71,7 +71,7 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
         run: |
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment ${{ secrets.RAILWAY_ENV_ID_STAGING }}
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME_STAGING }} --environment ${{ secrets.RAILWAY_ENV_ID_STAGING }}
 
       - name: Verify deployment
         run: echo "✅ Deployed to STAGING environment"
@@ -93,7 +93,7 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PROD }}
         run: |
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment ${{ secrets.RAILWAY_ENV_ID_PROD }}
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME_PROD }} --environment ${{ secrets.RAILWAY_ENV_ID_PROD }}
 
       - name: Verify deployment
         run: echo "✅ Deployed to PRODUCTION environment"
