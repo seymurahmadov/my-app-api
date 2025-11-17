@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: dev
-      url: https://your-app-dev.railway.app
+      url: empowering-kindness-dev.up.railway.app
     steps:
       - uses: actions/checkout@v4
 
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: staging
-      url: https://your-app-staging.railway.app
+      url: passionate-beauty-staging.up.railway.app
     steps:
       - uses: actions/checkout@v4
 
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://your-app.railway.app
+      url: my-app-api-production.up.railway.app
     steps:
       - uses: actions/checkout@v4
 
@@ -95,7 +95,7 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PROD }}
         run: |
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME_DEV_PROD }} --environment ${{ secrets.RAILWAY_ENV_ID_PROD }}
+          railway up --service ${{ secrets.RAILWAY_SERVICE_PROD }} --environment ${{ secrets.RAILWAY_ENV_ID_PROD }}
 
       - name: Verify deployment
         run: echo "✅ Deployed to PRODUCTION environment"
