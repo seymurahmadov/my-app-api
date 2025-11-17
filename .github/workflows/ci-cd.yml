@@ -3,67 +3,56 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - dev
-      - staging
       - main
 
 jobs:
 
-  # 1. BUILD JOB (all branches)
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
+      - name: Maven Build
         run: ./mvnw -B package -DskipTests
 
 
-  # 2. DEPLOY DEV (AUTOMATIC)
   deploy_dev:
     needs: build
-    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
-
+    environment:
+      name: dev
     steps:
-      - name: Railway Dev Deploy Info
-        run: |
-          echo "Dev branch push olundu → Railway avtomatik deploy edəcək."
+      - run: |
+          echo "1) DEV deployment başladı..."
+          echo "Railway dev env deploy edilir."
 
 
-  # 3. DEPLOY STAGING (MANUAL APPROVAL)
   deploy_staging:
-    needs: build
-    if: github.ref == 'refs/heads/staging'
+    needs: deploy_dev
     runs-on: ubuntu-latest
     environment:
       name: staging
-      url: https://my-app-api-production.up.railway.app
-
+      # burada GitHub UI-də approval tələbi olacaq
     steps:
-      - name: Railway Staging Deploy Info
-        run: |
-          echo "Staging üçün approval tələb olunur. Approval verən kimi Railway deploy edəcək."
+      - run: |
+          echo "2) STAGING deployment başladı..."
+          echo "Railway staging env deploy edilir."
 
 
-  # 4. DEPLOY PRODUCTION (MANUAL APPROVAL)
   deploy_prod:
-    needs: build
-    if: github.ref == 'refs/heads/main'
+    needs: deploy_staging
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://my-app-api-production.up.railway.app
-
+      # yenə manual approval tələb edəcək
     steps:
-      - name: Railway Prod Deploy Info
-        run: |
-          echo "Production üçün manual approval ver → Railway deploy edəcək."
+      - run: |
+          echo "3) PROD deployment başladı..."
+          echo "Railway production env deploy edilir."
