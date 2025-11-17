@@ -76,6 +76,7 @@ jobs:
       - name: Verify deployment
         run: echo "✅ Deployed to STAGING environment"
 
+
   # 4️⃣ DEPLOY PROD (MANUAL APPROVAL)
   deploy_prod:
     needs: deploy_staging
