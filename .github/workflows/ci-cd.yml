@@ -45,16 +45,11 @@ jobs:
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
-      - name: Link Railway Project
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway link ${{ secrets.RAILWAY_PROJECT_ID }}
-
       - name: Deploy to DEV
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment dev
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment ${{ secrets.RAILWAY_ENV_ID_DEV }} --project ${{ secrets.RAILWAY_PROJECT_ID }}
 
       - name: Verify deployment
         run: echo "✅ Deployed to DEV environment"
@@ -72,16 +67,11 @@ jobs:
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
-      - name: Link Railway Project
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway link ${{ secrets.RAILWAY_PROJECT_ID }}
-
       - name: Deploy to STAGING
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment staging
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment ${{ secrets.RAILWAY_ENV_ID_STAGING }} --project ${{ secrets.RAILWAY_PROJECT_ID }}
 
       - name: Verify deployment
         run: echo "✅ Deployed to STAGING environment"
@@ -99,16 +89,11 @@ jobs:
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
-      - name: Link Railway Project
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway link ${{ secrets.RAILWAY_PROJECT_ID }}
-
       - name: Deploy to PROD
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment production
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment ${{ secrets.RAILWAY_ENV_ID_PROD }} --project ${{ secrets.RAILWAY_PROJECT_ID }}
 
       - name: Verify deployment
         run: echo "✅ Deployed to PRODUCTION environment"
