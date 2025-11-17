@@ -23,37 +23,64 @@ jobs:
         run: ./mvnw -B package -DskipTests
 
 
-
   deploy_dev:
     needs: build
     runs-on: ubuntu-latest
     environment:
       name: dev
     steps:
-      - run: |
-          echo "1) DEV deployment başladı..."
-          echo "Railway dev env deploy edilir."
+      - uses: actions/checkout@v4
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Login Railway
+        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Switch to DEV environment
+        run: railway environment switch dev
+
+      - name: Deploy to DEV
+        run: railway up --service your-service-name
 
 
   deploy_staging:
     needs: deploy_dev
     runs-on: ubuntu-latest
     environment:
-      name: staging
-      # burada GitHub UI-də approval tələbi olacaq
+      name: staging   # GitHub-da manual approval açılacaq
     steps:
-      - run: |
-          echo "2) STAGING deployment başladı..."
-          echo "Railway staging env deploy edilir."
+      - uses: actions/checkout@v4
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Login Railway
+        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Switch to STAGING environment
+        run: railway environment switch staging
+
+      - name: Deploy to STAGING
+        run: railway up --service your-service-name
 
 
   deploy_prod:
     needs: deploy_staging
     runs-on: ubuntu-latest
     environment:
-      name: production
-      # yenə manual approval tələb edəcək
+      name: production   # Manual approval
     steps:
-      - run: |
-          echo "3) PROD deployment başladı..."
-          echo "Railway production env deploy edilir."
+      - uses: actions/checkout@v4
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Login Railway
+        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Switch to PROD environment
+        run: railway environment switch prod
+
+      - name: Deploy to PROD
+        run: railway up --service your-service-name
