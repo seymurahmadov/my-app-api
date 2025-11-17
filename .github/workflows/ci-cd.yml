@@ -94,7 +94,7 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PROD }}
         run: |
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME_PROD }} --environment ${{ secrets.RAILWAY_ENV_ID_PROD }}
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME_DEV_PROD }} --environment ${{ secrets.RAILWAY_ENV_ID_PROD }}
 
       - name: Verify deployment
         run: echo "✅ Deployed to PRODUCTION environment"
