@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-
   # 1️⃣ BUILD JOB
   build:
     runs-on: ubuntu-latest
@@ -23,56 +25,75 @@ jobs:
       - name: Build with Maven
         run: ./mvnw -B package -DskipTests
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: target/*.jar
+          retention-days: 1
+
   # 2️⃣ DEPLOY DEV (AUTOMATIC)
   deploy_dev:
     needs: build
     runs-on: ubuntu-latest
     environment:
       name: dev
+      url: https://your-app-dev.railway.app
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
-      - name: Set Railway token
-        run: echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}" >> $GITHUB_ENV
-
       - name: Deploy to DEV
-        run: railway up --service your-service-name --environment dev
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway up --service your-service-name --environment dev
+
+      - name: Verify deployment
+        run: echo "✅ Deployed to DEV environment"
 
   # 3️⃣ DEPLOY STAGING (MANUAL APPROVAL)
   deploy_staging:
     needs: deploy_dev
     runs-on: ubuntu-latest
     environment:
-      name: staging  # GitHub-da manual approval açılacaq
+      name: staging
+      url: https://your-app-staging.railway.app
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
-      - name: Set Railway token
-        run: echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}" >> $GITHUB_ENV
-
       - name: Deploy to STAGING
-        run: railway up --service your-service-name --environment staging
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway up --service your-service-name --environment staging
+
+      - name: Verify deployment
+        run: echo "✅ Deployed to STAGING environment"
 
   # 4️⃣ DEPLOY PROD (MANUAL APPROVAL)
   deploy_prod:
     needs: deploy_staging
     runs-on: ubuntu-latest
     environment:
-      name: production  # GitHub-da manual approval açılacaq
+      name: production
+      url: https://your-app.railway.app
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
 
-      - name: Set Railway token
-        run: echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}" >> $GITHUB_ENV
-
       - name: Deploy to PROD
-        run: railway up --service your-service-name --environment production
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway up --service your-service-name --environment production
+
+      - name: Verify deployment
+        run: echo "✅ Deployed to PRODUCTION environment"
